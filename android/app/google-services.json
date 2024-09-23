@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "637429514740",
+    "project_id": "mastering-8e691",
+    "storage_bucket": "mastering-8e691.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637429514740:android:5ea1ab90a5b7afaa1d39a1",
+        "android_client_info": {
+          "package_name": "com.example.mastering_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuwK9PBSJlc7jxCn0FvihNlXgjANmkoro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
