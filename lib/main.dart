@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mastering_firebase/screens/auth/sign_up.dart';
+import 'package:mastering_firebase/screens/home/add_page.dart';
 import 'package:mastering_firebase/screens/home/home.dart';
 
 import 'screens/auth/sign_in.dart';
@@ -39,11 +40,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mastering Firebase',
+      theme: ThemeData(
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.redAccent,
+          elevation: 12
+        ),
+        appBarTheme: AppBarTheme(
+          color: Colors.redAccent,
+          elevation: 14,
+        ),
+      ),
       home: FirebaseAuth.instance.currentUser == null ?SignIn() : HomePage(),
       routes: {
         "HomePage" :(context)=>HomePage(),
         "SignInPage" :(context)=>SignIn(),
         "SigUpPage" :(context)=>SignUp(),
+        "AddPage" :(context)=>AddPage(),
       }
     );
   }

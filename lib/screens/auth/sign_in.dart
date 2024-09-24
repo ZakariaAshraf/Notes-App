@@ -51,6 +51,30 @@ class _SignInState extends State<SignIn> {
                   20,
                 )),
               )),
+          InkWell(
+              onTap: () async {
+                try {
+                  await FirebaseAuth.instance
+                      .sendPasswordResetEmail(email: emailController.text);
+                  AlertDialog(
+                    title:
+                        Text("We sent a reset email ,please check your inbox"),
+                  );
+                } catch (e) {
+                  // TODO
+                  print(e.toString());
+                }
+              },
+              child: Container(
+                child: Text(
+                  "Forget Password ?",
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                  ),
+                ),
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.all(10),
+              )),
           const SizedBox(
             height: 30,
           ),
@@ -58,10 +82,15 @@ class _SignInState extends State<SignIn> {
             child: GestureDetector(
               onTap: () async {
                 try {
-                 final userSigned= await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text);
-                  Navigator.pushNamedAndRemoveUntil(context, "HomePage", (route) => false,);
+                  final userSigned = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    "HomePage",
+                    (route) => false,
+                  );
                 } on FirebaseAuthException catch (e) {
                   // TODO
                   if (e.code == 'user-not-found') {

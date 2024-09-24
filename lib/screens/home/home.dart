@@ -18,6 +18,9 @@ class HomePage extends StatelessWidget {
           }, icon: Icon(Icons.logout_outlined),),
         ],
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushNamed(context, "AddPage");
+      },child: Icon(Icons.add,),),
 
     );
   }
