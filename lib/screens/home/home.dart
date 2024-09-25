@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mastering_firebase/screens/home/edit_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -70,7 +71,11 @@ class _HomePageState extends State<HomePage> {
                     animType: AnimType.rightSlide,
                     context: context,
                     dialogType: DialogType.warning,
-                    btnCancelOnPress: () {},
+                    btnCancelOnPress: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditPage(oldName: data[index]["name"], docId: data[index].id),));
+                    },
+                    btnCancelText: "Edit",
+                    btnOkText: "Delete",
                     btnOkOnPress: () async {
                       await FirebaseFirestore.instance
                           .collection("categories")
