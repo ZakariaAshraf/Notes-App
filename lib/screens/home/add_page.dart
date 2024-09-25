@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddPage extends StatefulWidget {
@@ -18,8 +19,9 @@ class _AddPageState extends State<AddPage> {
        try {
          await categories.add({
            "name": categoryName.text,
+           "id": FirebaseAuth.instance.currentUser!.uid,
          });
-         Navigator.of(context).pushReplacementNamed("HomePage");
+         Navigator.of(context).pushNamedAndRemoveUntil("HomePage",(route) =>false,);
        } catch (e) {
          print("Error"+e.toString());
          // TODO

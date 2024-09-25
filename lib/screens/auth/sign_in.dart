@@ -110,6 +110,8 @@ class _SignInState extends State<SignIn> {
                           print('No user found for that email.');
                         } else if (e.code == 'wrong-password') {
                           print('Wrong password provided for that user.');
+                          isLoading = true;
+                          setState(() {});
                         }
                       }
                     },

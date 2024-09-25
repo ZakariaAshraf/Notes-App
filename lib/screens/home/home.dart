@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("Home"),
         centerTitle: true,
         backgroundColor: Colors.red,
         actions: [
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 print(e.toString());
               }
             },
-            icon: Icon(Icons.logout_outlined),
+            icon: const Icon(Icons.logout_outlined),
           ),
         ],
       ),
@@ -52,18 +52,18 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.pushNamed(context, "AddPage");
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : GridView.builder(
               itemCount: data.length,
               gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onDoubleTap: () => AwesomeDialog(
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       child: Column(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.note_rounded,
                             size: 100,
                             color: Colors.grey,
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
 
   getData() async {
     QuerySnapshot response =
-        await FirebaseFirestore.instance.collection("categories").get();
+        await FirebaseFirestore.instance.collection("categories").where("id",isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
     data.addAll(response.docs);
     isLoading = false;
     setState(() {});
