@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoteView(categoryId: data[index].id)),);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoteView(noteId: data[index].id)),);
                   },
                   onDoubleTap: () => AwesomeDialog(
                     animType: AnimType.rightSlide,
