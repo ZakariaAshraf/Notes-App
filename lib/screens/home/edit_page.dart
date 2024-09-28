@@ -35,7 +35,12 @@ class _EditPageState extends State<EditPage> {
      categoryName.text=widget.oldName;
       super.initState();
   }
-
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    categoryName.dispose();
+  }
    @override
   Widget build(BuildContext context) {
     return Scaffold(

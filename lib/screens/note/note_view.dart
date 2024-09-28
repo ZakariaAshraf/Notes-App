@@ -3,16 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mastering_firebase/screens/home/edit_page.dart';
-import 'package:mastering_firebase/screens/note/note_view.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class NoteView extends StatefulWidget {
+  final String categoryId;
+  NoteView({Key? key, required this.categoryId}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<NoteView> createState() => _NoteViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NoteViewState extends State<NoteView> {
   bool isLoading = true;
   List<QueryDocumentSnapshot> data = [];
 
@@ -28,31 +28,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Note"),
         centerTitle: true,
         backgroundColor: Colors.red,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              try {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  "SignInPage",
-                  (route) => false,
-                );
-              } catch (e) {
-                // TODO
-                print(e.toString());
-              }
-            },
-            icon: const Icon(Icons.logout_outlined),
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, "AddPage");
+          Navigator.pushNamed(context, "AddNote");
         },
         child: const Icon(
           Icons.add,
@@ -64,28 +46,32 @@ class _HomePageState extends State<HomePage> {
             )
           : GridView.builder(
               itemCount: data.length,
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoteView(categoryId: data[index].id)),);
-                  },
                   onDoubleTap: () => AwesomeDialog(
                     animType: AnimType.rightSlide,
                     context: context,
                     dialogType: DialogType.warning,
                     btnCancelOnPress: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditPage(oldName: data[index]["name"], docId: data[index].id),));
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => EditPage(
+                      //         oldName: data[index]["name"],
+                      //         docId: data[index].id),
+                      //   ),
+                      // );
                     },
                     btnCancelText: "Edit",
                     btnOkText: "Delete",
                     btnOkOnPress: () async {
-                      await FirebaseFirestore.instance
-                          .collection("categories")
-                          .doc(data[index].id)
-                          .delete();
-                      Navigator.pushReplacementNamed(context, "HomePage");
+                      // await FirebaseFirestore.instance
+                      //     .collection("categories")
+                      //     .doc(data[index].id)
+                      //     .delete();
+                      // Navigator.pushReplacementNamed(context, "HomePage");
                     },
                     title: "Warning",
                     desc: "are you sure delete",
@@ -94,12 +80,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       child: Column(
                         children: [
-                          const Icon(
-                            Icons.file_copy_outlined,
-                            size: 100,
-                            color: Colors.grey,
-                          ),
-                          Text("${data[index]["name"]}"),
+                          Text("${data[index]["note"]}"),
                         ],
                       ),
                     ),
@@ -111,8 +92,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
-    QuerySnapshot response =
-        await FirebaseFirestore.instance.collection("categories").where("id",isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+    QuerySnapshot response = await FirebaseFirestore.instance
+        .collection("categories").doc(widget.categoryId).collection("notes")
+        .get();
     data.addAll(response.docs);
     isLoading = false;
     setState(() {});
