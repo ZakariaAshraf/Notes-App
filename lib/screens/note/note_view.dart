@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mastering_firebase/screens/home/edit_page.dart';
 import 'package:mastering_firebase/screens/note/add.dart';
+import 'package:mastering_firebase/screens/note/edit.dart';
 
 class NoteView extends StatefulWidget {
   final String noteId;
@@ -62,23 +63,24 @@ class _NoteViewState extends State<NoteView> {
                         context: context,
                         dialogType: DialogType.warning,
                         btnCancelOnPress: () {
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => EditPage(
-                          //         oldName: data[index]["name"],
-                          //         docId: data[index].id),
-                          //   ),
-                          // );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditNote(
+                                  noteId: data[index].id,
+                                  oldNote:data[index]["note"],
+                                  docId: widget.noteId,),
+                            ),
+                          );
                         },
                         btnCancelText: "Edit",
                         btnOkText: "Delete",
                         btnOkOnPress: () async {
-                          // await FirebaseFirestore.instance
-                          //     .collection("categories")
-                          //     .doc(data[index].id)
-                          //     .delete();
-                          // Navigator.pushReplacementNamed(context, "HomePage");
+                          await FirebaseFirestore.instance
+                              .collection("categories").doc(widget.noteId).collection("notes")
+                              .doc(data[index].id)
+                              .delete();
+                          Navigator.pushReplacementNamed(context, "HomePage");
                         },
                         title: "Warning",
                         desc: "are you sure delete",
